@@ -1,0 +1,235 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block content %}
+    <form class="form-horizontal" method="POST">
+	    <fieldset>
+            <legend>Général</legend>
+            <div class="form-group">
+                <label for="type" class="col-lg-2 control-label">Type de recette</label>
+                <div class="col-lg-2">
+                    <select class="form-control" name="type" id="type">
+                        {% for type in listTypeRecipe %}
+                            {% if type.id == recipe.id_type_recette %}
+                                <option value="{{type.id}}" selected>{{type.nom}}</option>
+                            {% else %}
+                                <option value="{{type.id}}">{{type.nom}}</option> 
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="titre" class="col-lg-2 control-label">Titre</label>
+                <div class="col-lg-5">
+                    <input type="text" class="form-control" id="titre" name="titre" placeholder="Titre recette" value="{{recipe.nom_recette}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="photo" class="col-lg-2 control-label">Lien de la photo</label>
+                <div class="col-lg-5">
+                    <input type="text" class="form-control" id="photo" name="photo" placeholder="Lien de la photo" value="{{recipe.url_photo}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-lg-2 control-label">Description</label>
+                <div class="col-lg-5">
+                    <textarea class="form-control" id="description" name="description" placeholder="Description de la recette">{{recipe.description}}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portion" class="col-lg-2 control-label">Portion</label>
+                <div class="col-lg-1">
+                    <input type="text" class="form-control" id="portion" name="portion" placeholder="Nombre" value="{{recipe.quantite_recette}}" />
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="unite_portion">
+                        {% for unit in listGlobalUnit %}
+                            {% if unit.id == recipe.id_unite %}
+                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                            {% else %}
+                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="duree_prep" class="col-lg-2 control-label">Durée de préparation</label>
+                <div class="col-lg-1">
+                    <input type="text" class="form-control" id="duree_prep" name="duree_prep" placeholder="Durée" value="{{recipe.duree_prep}}" />
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="unite_prep">
+                        {% for unit in listTimeUnit %}
+                            {% if unit.id == recipe.id_unite_prep %}
+                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                            {% else %}
+                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="duree_cuisson" class="col-lg-2 control-label">Durée de cuisson</label>
+                <div class="col-lg-1">
+                    <input type="text" class="form-control" id="duree_cuisson" name="duree_cuisson" placeholder="Durée" value="{{recipe.duree_cuisson}}" />
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="unite_cuisson">
+                        {% for unit in listTimeUnit %}
+                            {% if unit.id == recipe.id_unite_cuisson %}
+                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                            {% else %}
+                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="duree_attente" class="col-lg-2 control-label">Durée d'attente</label>
+                <div class="col-lg-1">
+                    <input type="text" class="form-control" id="duree_attente" name="duree_attente" placeholder="Durée" value="{{recipe.duree_attente}}" />
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="unite_attente">
+                        {% for unit in listTimeUnit %}
+                            {% if unit.id == recipe.id_unite_attente %}
+                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                            {% else %}
+                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <br/>
+            <br/>
+        </fieldset>
+
+        <div class="form-group col-lg-7 col-lg-offset-5">
+        	<fieldset>
+                <legend>Ingrédients</legend>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Quantité</th>
+                                <th>Unité</th>
+                                <th>Ingrédient</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingredient" data-inggroup="{{nbData.inggroup}}" data-ing="{{nbData.ing}}">
+                            {% set grp = "" %}
+                            {% set num_grp = 1 %}
+                            {% set num_ing = 1 %}
+                            {% for ing in listIngredientsRecipe %}
+                                {% if grp == "" or not grp == ing.nom_grp %}
+                                    <tr class="ing_group{{num_grp}}">
+                                        <td><label for="ing_group{{num_grp}}" class="col-lg-2 control-label">Groupe</label></td>
+                                        <td colspan="3"><input type="text" id="ing_group{{num_grp}}" name="ing_group{{num_grp}}" class="form-control" placeholder="Groupe" value="{{ing.nom_grp}}" /></td>
+                                        <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                    </tr>
+                                    {% set num_grp = num_grp + 1 %}
+                                    {% set grp = ing.nom_grp %}
+                                {% endif %}
+                                <tr class="ing{{num_ing}}">
+                                    <td>
+                                        <label for="ing{{num_ing}}" class="col-lg-2 control-label">Ingrédient</label>
+                                        <input type="hidden" name="" value="" />
+                                    </td>
+                                    <td><input type="text" id="quantite{{num_ing}}" name="quantite{{num_ing}}"class="form-control" placeholder="Quantité" value="{{ing.quantite}}" /></td>
+                                    <td>               
+                                        <select id="unite{{num_ing}}" name="unite{{num_ing}}" class="form-control">
+                                            {% for unit in listQuantityUnit %}
+                                                {% if unit.id == ing.id_unite %}
+                                                    <option value="{{unit.id}}" selected>{{unit.nom}}</option> 
+                                                {% else %}
+                                                    <option value="{{unit.id}}">{{unit.nom}}</option> 
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="ing{{num_ing}}" name="ing{{num_ing}}" class="form-control">
+                                            {% for ingType in listTypeIngredients %}
+                                                {% if ingType.id == ing.id_type_ing %}
+                                                    <option value="{{ingType.id}}" selected>{{ingType.nom}}</option>
+                                                {% else %}
+                                                    <option value="{{ingType.id}}">{{ingType.nom}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                </tr>
+                                {% set num_ing = num_ing + 1 %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-group" role="group">
+                    <button id="add_ingredient" class="btn btn-success">Ajouter un ingrédient</button>
+                    <button id="add_group_ingredient" class="btn btn-success">Ajouter un groupe d'ingrédients</button>
+                </div>
+            </fieldset>
+            <br/>
+            <br/>
+        </div>
+
+        
+        <div class="form-group col-lg-7 col-lg-offset-5">
+            <fieldset>
+                <legend>Instructions</legend>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instruction" data-insgroup="{{nbData.insgroup}}" data-ins="{{nbData.ins}}">
+                            {% set grp = "" %}
+                            {% set num_grp = 1 %}
+                            {% set num_ins = 1 %}
+                            {% for ins in listInstructionsRecipe %}
+                                {% if grp == "" or not grp == ins.nom_grp %}
+                                    <tr class="ins_group{{num_grp}}">
+                                        <td><label for="ins_group{{num_grp}}" class="col-lg-1 control-label">Groupe</label></td>
+                                        <td><input type="text" id="ins_group{{num_grp}}" name="ins_group{{num_grp}}" class="form-control" placeholder="Groupe" value="{{ins.nom_grp}}" /></td>
+                                        <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                    </tr>
+                                    {% set num_grp = num_grp + 1 %}
+                                    {% set grp = ins.nom_grp %}
+                                {% endif %}
+                                <tr class="ins1">
+                                    <td><label for="ins{{num_ins}}" class="col-lg-1 control-label">Instruction</label></td>
+                                    <td><textarea id="ins{{num_ins}}" name="ins{{num_ins}}" class="form-control" placeholder="Description de l'étape">{{ins.description}}</textarea></td>
+                                    <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                </tr>
+                                {% set num_ins = num_ins + 1 %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-group" role="group">
+                    <button id="add_instruction" class="btn btn-success">Ajouter une instruction</button>
+                    <button id="add_group_instruction" class="btn btn-success">Ajouter un groupe d'instructions</button>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="form-group col-lg-7 col-lg-offset-5">
+            {% if action == 'addrecipe' %}
+                <button type="submit" id="add_recipe" name="add_recipe" class="btn btn-success">Créer la recette</button>
+            {% else %}
+                <button type="submit" id="modify_recipe" name="modify_recipe" class="btn btn-success">Modifier la recette</button>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}

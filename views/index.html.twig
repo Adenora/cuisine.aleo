@@ -1,0 +1,36 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    {% for recipe in listRecipes %}
+    <div class="col-lg-offset-3 col-lg-6 article">
+      <h2><a href="{{url}}recette/{{recipe.id}}">{{recipe.nom_recette}}</a></h2>
+
+      <div class="entry-meta">
+        <span class="type">{{recipe.type_recette}}</span>
+        <span class="date">Posté le {{recipe.date_ajout}}</span>
+        <span class="comments"><a href="http://delicacy-btemplates.blogspot.fr/2013/04/lorem-ipsum_5918.html#comment-form">2 commentaires</a></span>
+      </div>
+
+      <div class="media">
+        <div class="media-left">
+          <img class="media-object thumbnail" src="{{recipe.url_photo}}" alt="{{recipe.nom_recette}}" width="200px">
+        </div>
+        <div class="media-body">
+          {{recipe.description}}
+
+          <div style="float:right;padding-right:10px;margin-top:10px;">
+            <a class="morer" href="{{url}}recette/{{recipe.id}}">Déguster la suite ...</a>
+          </div>
+        </div>
+      </div>
+     
+      <div class="deco-line"></div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+      
+{% endblock %}
