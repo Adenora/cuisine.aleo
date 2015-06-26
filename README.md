@@ -1,5 +1,3 @@
-# cuisine.aleo
-Blog sur la cuisine d'Aleo
 # Blog sur la cuisine d'Aleo
 
 ## TODO
