@@ -4,8 +4,8 @@
 
 <div class="container-fluid">
   <div class="row">
-    {% for recipe in listRecipes %}
     <div class="col-lg-offset-3 col-lg-6 article">
+    {% for recipe in listRecipes %}
       <h2><a href="{{url}}recette/{{recipe.id}}">{{recipe.nom_recette}}</a></h2>
 
       <span class="type{{recipe.id_type_recette}}">{{recipe.type_recette}}</span>
@@ -26,8 +26,8 @@
       </div>
      
       <div class="deco-line"></div>
-    </div>
     {% endfor %}
+    </div>
   </div>
 </div>
       

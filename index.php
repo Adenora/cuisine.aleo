@@ -28,9 +28,27 @@
             'url' => $url,
         ));
     }
+    elseif (isset($_GET['cat']) && $_GET['cat'] == 'entree') {
+        echo $twig->render('index.html.twig', array(
+            'listRecipes' => getListRecipes($bdd,$num_page,1),
+            'url' => $url,
+        ));
+    }
+    elseif (isset($_GET['cat']) && $_GET['cat'] == 'plat') {
+        echo $twig->render('index.html.twig', array(
+            'listRecipes' => getListRecipes($bdd,$num_page,2),
+            'url' => $url,
+        ));
+    }
+    elseif (isset($_GET['cat']) && $_GET['cat'] == 'dessert') {
+        echo $twig->render('index.html.twig', array(
+            'listRecipes' => getListRecipes($bdd,$num_page,3),
+            'url' => $url,
+        ));
+    }
     else {
         echo $twig->render('index.html.twig', array(
-            'listRecipes' => getListRecipes($bdd,$num_page),
+            'listRecipes' => getListRecipes($bdd,$num_page,0),
             'url' => $url,
         ));
     }

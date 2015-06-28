@@ -112,11 +112,13 @@ if (isset($_POST['type'])) {
  *		Base de données
  * @param num_page
  *		Numéro de page
+ * @param type_recette
+ *		Type de recette (0 : Tous les types, 1 : Entrée, 2 : Plat, 3 : Dessert)
  *
  * @return array
  *		Table des recettes
 **/
-  	function getListRecipes($bdd, $num_page) {
+  	function getListRecipes($bdd, $num_page, $type_recette) {
   		$i = 0;
   		$list = array();
 
@@ -131,7 +133,12 @@ if (isset($_POST['type'])) {
 				$nb_recette = (($num_page - 1) * 10) - 1;
 			}
 
-			$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.id_type_recette as id_type_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette LIMIT $nb_recette, 10");
+			if ($type_recette == 0) {
+				$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.id_type_recette as id_type_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette LIMIT $nb_recette, 10");
+			}
+			else {
+				$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.id_type_recette as id_type_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette WHERE r.id_type_recette = $type_recette LIMIT $nb_recette, 10");
+			}
 		}
 
 
