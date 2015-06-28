@@ -7,19 +7,18 @@
         <div class="col-lg-offset-3 col-lg-6 article">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2><a href="{{url}}recette/{{recipe.id_recette}}">{{recipe.nom_recette}}</a></h2>
+                    <h2><a href="{{url}}recette/{{recipe.id}}">{{recipe.nom_recette}}</a></h2>
 
-                    <div class="entry-meta">
-                        <span class="type">{{recipe.nom_type_recette}}</span>
-                        <span class="date">Posté le {{recipe.date_ajout}}</span>
-                        <span class="comments"><a href="http://delicacy-btemplates.blogspot.fr/2013/04/lorem-ipsum_5918.html#comment-form">2 commentaires</a></span>
-                    </div>
+                    <span class="type{{recipe.id_type_recette}}">{{recipe.nom_type_recette}}</span>
+                    <span class="date">Posté le {{recipe.date_ajout}}</span>
+                    <span class="comment"><a href="#commentaire">2 commentaires</a></span>
+
                     <div class="deco-line"></div>
 
-                    <img src="http://img0.mxstatic.com/wallpapers/b928785756d42f46bfffdd5a0a94ba32_large.jpeg" alt="" title="demo-recipe" class="thumbnail" style="width:100%" />
+                    <img src="{{recipe.url_photo}}" alt="{{recipe.nom_type_recette}}" class="thumbnail grande-photo" />
                     <div class="deco-line"></div>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In diam ipsum, gravida sit amet cursus id, vulputate eu lacus. Mauris dictum nisi nec nibh eleifend, nec vehicula velit dictum. Nam porta rutrum sem vel vestibulum. Mauris accumsan interdum felis in sagittis. Aliquam sodales dui ex, vitae maximus massa bibendum vitae. Phasellus malesuada semper tincidunt. Etiam efficitur, mauris vel vestibulum tincidunt, sem lectus pulvinar tortor, in dictum quam erat ac eros. Vivamus euismod vitae arcu et posuere. Nam vitae fringilla massa.</p>
+                    <p>{{recipe.description}}</p>
 
                     <dl class="dl-horizontal">
                         <dt>Portions</dt><dd>{{recipe.quantite_recette}} {{recipe.portion}}</dd>
@@ -30,13 +29,13 @@
 
                     <div class="deco-line"></div>
 
-                    <h3 align="center">Ingrédients</h3>
+                    <h3>Ingrédients</h3>
                     {% set grp = "" %}
                     {% for ing in listIngredientsRecipe %}
-                        {% if not grp == ing.nom_grp %}
+                        {% if grp != "" and grp != ing.nom_grp%}
                             </ul>
                         {% endif %}
-                        {% if grp == "" or not grp == ing.nom_grp %}
+                        {% if grp == "" or grp != ing.nom_grp %}
                             <h4>{{ing.nom_grp}}</h4>
                             {% set grp = ing.nom_grp %}
                             <ul>
@@ -47,13 +46,13 @@
 
                     <div class="deco-line"></div>
 
-                    <h3 align="center">Instructions</h3>
+                    <h3>Instructions</h3>
                     {% set grp = "" %}
                     {% for ins in listInstructionsRecipe %}
-                        {% if not grp == ins.nom_grp %}
+                        {% if grp != "" and grp != ins.nom_grp %}
                             </ol>
                         {% endif %}
-                        {% if grp == "" or not grp == ins.nom_grp %}
+                        {% if grp == "" or grp != ins.nom_grp %}
                             <h4>{{ins.nom_grp}}</h4>
                             {% set grp = ins.nom_grp %}
                             <ol>
@@ -67,12 +66,12 @@
         <div class="col-lg-offset-3 col-lg-6 article">
             <div class="row">
                <div class="col-lg-12">
-                    <h3 align="center">Commentaires</h3>
+                    <h3 id="commentaire">Commentaires</h3>
                 </div>
                 <div class="col-lg-12">
-                    <div class="comment">
-                        <img src="http://farm5.staticflickr.com/4012/5126739463_e5598d33fb.jpg">
-                        <div class="comment-content">
+                    <div class="commentaire">
+                        <img src="http://farm5.staticflickr.com/4012/5126739463_e5598d33fb.jpg" alt="">
+                        <div class="commentaire-content">
                             <p class="author"><strong>Jack the Ripper</strong> - 10 minutes ago</p>
                             <span>
                                 Good day to you and your family good sir. Let me introduce myself. I'm Prince Pullouttamyassa from Nigeria, strangley I still have money I want to send you, but you've never mailed me back...
@@ -81,9 +80,9 @@
                     </div>
                 </div>
                 <div class="col-lg-12">
-                    <div class="comment">
-                        <img src="http://farm5.staticflickr.com/4012/5126739463_e5598d33fb.jpg">
-                        <div class="comment-content">
+                    <div class="commentaire">
+                        <img src="http://farm5.staticflickr.com/4012/5126739463_e5598d33fb.jpg" alt="">
+                        <div class="commentaire-content">
                             <p class="author"><strong>Jack the Ripper</strong> - 10 minutes ago</p>
                             <span>
                                 Good day to you and your family good sir. Let me introduce myself. I'm Prince Pullouttamyassa from Nigeria, strangley I still have money I want to send you, but you've never mailed me back...

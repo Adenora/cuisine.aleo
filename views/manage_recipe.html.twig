@@ -10,9 +10,9 @@
                     <select class="form-control" name="type" id="type">
                         {% for type in listTypeRecipe %}
                             {% if type.id == recipe.id_type_recette %}
-                                <option value="{{type.id}}" selected>{{type.nom}}</option>
+                                <option label="{{type.nom}}" value="{{type.id}}" selected>{{type.nom}}</option>
                             {% else %}
-                                <option value="{{type.id}}">{{type.nom}}</option> 
+                                <option label="{{type.nom}}" value="{{type.id}}">{{type.nom}}</option> 
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -45,9 +45,9 @@
                     <select class="form-control" name="unite_portion">
                         {% for unit in listGlobalUnit %}
                             {% if unit.id == recipe.id_unite %}
-                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}" selected>{{unit.nom}}</option>
                             {% else %}
-                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}">{{unit.nom}}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -62,9 +62,9 @@
                     <select class="form-control" name="unite_prep">
                         {% for unit in listTimeUnit %}
                             {% if unit.id == recipe.id_unite_prep %}
-                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}" selected>{{unit.nom}}</option>
                             {% else %}
-                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}">{{unit.nom}}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -79,9 +79,9 @@
                     <select class="form-control" name="unite_cuisson">
                         {% for unit in listTimeUnit %}
                             {% if unit.id == recipe.id_unite_cuisson %}
-                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}" selected>{{unit.nom}}</option>
                             {% else %}
-                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}">{{unit.nom}}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -96,9 +96,9 @@
                     <select class="form-control" name="unite_attente">
                         {% for unit in listTimeUnit %}
                             {% if unit.id == recipe.id_unite_attente %}
-                                <option value="{{unit.id}}" selected>{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}" selected>{{unit.nom}}</option>
                             {% else %}
-                                <option value="{{unit.id}}">{{unit.nom}}</option>
+                                <option label="{{unit.nom}}" value="{{unit.id}}">{{unit.nom}}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -127,11 +127,11 @@
                             {% set num_grp = 1 %}
                             {% set num_ing = 1 %}
                             {% for ing in listIngredientsRecipe %}
-                                {% if grp == "" or not grp == ing.nom_grp %}
+                                {% if grp == "" or grp != ing.nom_grp %}
                                     <tr class="ing_group{{num_grp}}">
                                         <td><label for="ing_group{{num_grp}}" class="col-lg-2 control-label">Groupe</label></td>
                                         <td colspan="3"><input type="text" id="ing_group{{num_grp}}" name="ing_group{{num_grp}}" class="form-control" placeholder="Groupe" value="{{ing.nom_grp}}" /></td>
-                                        <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                        <td class="red"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
                                     </tr>
                                     {% set num_grp = num_grp + 1 %}
                                     {% set grp = ing.nom_grp %}
@@ -141,14 +141,14 @@
                                         <label for="ing{{num_ing}}" class="col-lg-2 control-label">Ingrédient</label>
                                         <input type="hidden" name="" value="" />
                                     </td>
-                                    <td><input type="text" id="quantite{{num_ing}}" name="quantite{{num_ing}}"class="form-control" placeholder="Quantité" value="{{ing.quantite}}" /></td>
+                                    <td><input type="text" id="quantite{{num_ing}}" name="quantite{{num_ing}}" class="form-control" placeholder="Quantité" value="{{ing.quantite}}" /></td>
                                     <td>               
                                         <select id="unite{{num_ing}}" name="unite{{num_ing}}" class="form-control">
                                             {% for unit in listQuantityUnit %}
                                                 {% if unit.id == ing.id_unite %}
-                                                    <option value="{{unit.id}}" selected>{{unit.nom}}</option> 
+                                                    <option label="{{unit.nom}}" value="{{unit.id}}" selected>{{unit.nom}}</option> 
                                                 {% else %}
-                                                    <option value="{{unit.id}}">{{unit.nom}}</option> 
+                                                    <option label="{{unit.nom}}" value="{{unit.id}}">{{unit.nom}}</option> 
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
@@ -157,14 +157,14 @@
                                         <select id="ing{{num_ing}}" name="ing{{num_ing}}" class="form-control">
                                             {% for ingType in listTypeIngredients %}
                                                 {% if ingType.id == ing.id_type_ing %}
-                                                    <option value="{{ingType.id}}" selected>{{ingType.nom}}</option>
+                                                    <option label="{{ingType.nom}}" value="{{ingType.id}}" selected>{{ingType.nom}}</option>
                                                 {% else %}
-                                                    <option value="{{ingType.id}}">{{ingType.nom}}</option>
+                                                    <option label="{{ingType.nom}}" value="{{ingType.id}}">{{ingType.nom}}</option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
                                     </td>
-                                    <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                    <td class="red"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
                                 </tr>
                                 {% set num_ing = num_ing + 1 %}
                             {% endfor %}
@@ -198,11 +198,11 @@
                             {% set num_grp = 1 %}
                             {% set num_ins = 1 %}
                             {% for ins in listInstructionsRecipe %}
-                                {% if grp == "" or not grp == ins.nom_grp %}
+                                {% if grp == "" or grp != ins.nom_grp %}
                                     <tr class="ins_group{{num_grp}}">
                                         <td><label for="ins_group{{num_grp}}" class="col-lg-1 control-label">Groupe</label></td>
                                         <td><input type="text" id="ins_group{{num_grp}}" name="ins_group{{num_grp}}" class="form-control" placeholder="Groupe" value="{{ins.nom_grp}}" /></td>
-                                        <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                        <td class="red"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
                                     </tr>
                                     {% set num_grp = num_grp + 1 %}
                                     {% set grp = ins.nom_grp %}
@@ -210,7 +210,7 @@
                                 <tr class="ins1">
                                     <td><label for="ins{{num_ins}}" class="col-lg-1 control-label">Instruction</label></td>
                                     <td><textarea id="ins{{num_ins}}" name="ins{{num_ins}}" class="form-control" placeholder="Description de l'étape">{{ins.description}}</textarea></td>
-                                    <td class="red" align="center"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
+                                    <td class="red"><span class="glyphicon glyphicon-minus-sign del" aria-hidden="true"></span></td>
                                 </tr>
                                 {% set num_ins = num_ins + 1 %}
                             {% endfor %}

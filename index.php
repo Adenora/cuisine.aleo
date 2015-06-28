@@ -1,5 +1,5 @@
 ﻿<?php
-	$url = "http://localhost/recette_aleo/";
+	$url = "http://localhost/cuisine_aleo/";
 
 	include_once('modele/connexion_bdd.php');
     include_once('modele/modele.php');

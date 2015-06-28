@@ -3,7 +3,7 @@
 ## TODO
 ### Côté administration
 - [X] Ajout de recettes       
-- [ ] Modification de recettes
+- [X] Modification de recettes
 - [X] Suppression de recettes
 - [ ] Ajout d'ingrédients
 - [ ] Modification d'ingrédients
@@ -16,6 +16,7 @@
 
 ### Côté utilisateur
 - [X] Affichage des recettes
+- [ ] Gestion des pages (10 recettes par page ?)
 - [ ] Gestion des commentaires
 - [ ] Gestion de la recherche
 - [ ] Gestion du menu (Entrée, plat, dessert)

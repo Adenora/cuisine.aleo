@@ -121,7 +121,7 @@ if (isset($_POST['type'])) {
   		$list = array();
 
   		if ($num_page == 0) {
-			$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette");
+			$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.id_type_recette as id_type_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette");
 		}
 		else {
 			if ($num_page == 1) {
@@ -131,13 +131,14 @@ if (isset($_POST['type'])) {
 				$nb_recette = (($num_page - 1) * 10) - 1;
 			}
 
-			$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette LIMIT $nb_recette, 10");
+			$req = $bdd->query("SELECT r.id_recette as id, r.nom_recette as nom_recette, r.id_type_recette as id_type_recette, r.description as description, r.url_photo as url_photo, r.date_ajout as date_ajout, t.nom_type_recette as type_recette FROM recette r JOIN type_recette t ON r.id_type_recette = t.id_type_recette LIMIT $nb_recette, 10");
 		}
 
 
 		while ($data = $req->fetch()) {
 			$list[$i]['id'] = $data['id'];
 			$list[$i]['nom_recette'] = $data['nom_recette'];
+			$list[$i]['id_type_recette'] = $data['id_type_recette'];
 			$list[$i]['description'] = $data['description'];
 			$list[$i]['type_recette'] = $data['type_recette'];
 			$list[$i]['date_ajout'] = date("d/m/Y", strtotime($data['date_ajout']));
@@ -172,25 +173,25 @@ if (isset($_POST['type'])) {
   			$list['ins'] = 0;
   		}
   		else {
-			$req = $bdd->prepare("SELECT count(id_groupe) FROM ingredient WHERE id_recette = ?");
+			$req = $bdd->prepare("SELECT count(distinct nom_groupe) FROM ingredient WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['inggroup'] = $req->fetchColumn();
 
 
-			$req = $bdd->prepare("SELECT count(id_type_ingredient) FROM ingredient WHERE id_recette = ?");
+			$req = $bdd->prepare("SELECT count(*) FROM ingredient WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['ing'] = $req->fetchColumn();
 
 
-			$req = $bdd->prepare("SELECT count(id_groupe) FROM etape WHERE id_recette = ?");
+			$req = $bdd->prepare("SELECT count(distinct nom_groupe) FROM etape WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['insgroup'] = $req->fetchColumn();
 
 
-			$req = $bdd->prepare("SELECT count(id_etape) FROM etape WHERE id_recette = ?");
+			$req = $bdd->prepare("SELECT count(*) FROM etape WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['ins'] = $req->fetchColumn();
@@ -403,6 +404,154 @@ if (isset($_POST['type'])) {
 
 				$req->execute(array($id_recette, $ins, $ins_group, $data_form[$key]));
 
+				$req->closeCursor();
+			}
+		}
+  	}
+
+ /** 
+ * Modifie les données d'une recette
+ *
+ * @param bdd
+ *		Base de données
+ * @param id
+ *		Identifiant de la recette
+ * @param data_form
+ *		Les données à sauvegarder
+**/
+  	function updateRecipe($bdd, $id, $data_form) {
+  		$ing_group = "";
+  		$ins_group = "";
+  		$ing = 0;
+  		$ins = 0;
+
+ 		// Infos principales de la recette
+		$req = $bdd->prepare("UPDATE recette SET nom_recette = ?, id_type_recette = ?, description = ?, id_unite_prep = ?, duree_prep = ?, id_unite_cuisson = ?, duree_cuisson = ?, id_unite_attente = ?, duree_attente = ?, id_unite = ?, quantite_recette = ?, url_photo = ?, date_ajout = ? WHERE id_recette = ?");
+
+		$req->execute(array($data_form['titre'], $data_form['type'], $data_form['description'], $data_form['unite_prep'], $data_form['duree_prep'], $data_form['unite_cuisson'], $data_form['duree_cuisson'], $data_form['unite_attente'], $data_form['duree_attente'], $data_form['unite_portion'], $data_form['portion'], $data_form['photo'], date('Y-m-d'), $id));
+
+		$req->closeCursor();
+
+		foreach($data_form as $key => $value) {
+			// Groupes des ingrédients de la recette
+			if (strstr($key, 'ing_group')) {
+				$ing_group = $value;
+			}
+
+			// Groupes des instructions de la recette
+			elseif (strstr($key, 'ins_group')) {
+				$ins_group = $value;
+			}
+
+			// Ingrédients de la recette
+			elseif (strstr($key, 'ing')) {
+				$ing++;
+
+				$num_ing = substr($key, 3);
+				$unite = "unite".$num_ing;
+				$quantite = "quantite".$num_ing;
+
+				// Vérification de l'existence de l'ingrédient dans la bdd
+				$req = $bdd->prepare("SELECT count(*) FROM ingredient WHERE id_recette = ? AND id_ingredient = ?");
+
+				$req->execute(array($id, $ing));
+
+				if ($req->fetchColumn() == 0) {
+					// Insertion
+					$req->closeCursor();
+
+					$req = $bdd->prepare("INSERT INTO ingredient SET id_recette = ?, id_ingredient = ?, id_type_ingredient = ?, id_unite = ?, nom_groupe = ?, quantite_ing = ?");
+
+					$req->execute(array($id, $ing, $data_form[$key], $data_form[$unite], $ing_group, $data_form[$quantite]));
+
+					$req->closeCursor();
+				}
+				else {
+					// Mise à jour
+					$req->closeCursor();
+
+					$req = $bdd->prepare("UPDATE ingredient SET id_type_ingredient = ?, id_unite = ?, nom_groupe = ?, quantite_ing = ? WHERE id_recette = ? AND id_ingredient = ?");
+
+					$req->execute(array($data_form[$key], $data_form[$unite], $ing_group, $data_form[$quantite], $id, $ing));
+
+					$req->closeCursor();
+				}
+			}
+
+			// Instructions de la recette
+			elseif (strstr($key, 'ins')) {
+				$ins++;
+
+				$num_ins = substr($key, 3);
+
+				// Vérification de l'existence de l'instruction dans la bdd
+				$req = $bdd->prepare("SELECT count(*) FROM etape WHERE id_recette = ? AND id_etape = ?");
+
+				$req->execute(array($id, $ins));
+
+				if ($req->fetchColumn() == 0) {
+					// Insertion
+					$req->closeCursor();
+
+					$req = $bdd->prepare("INSERT INTO etape SET id_recette = ?, id_etape = ?,  nom_groupe = ?, description = ?");
+
+					$req->execute(array($id, $ins, $ins_group, $data_form[$key]));
+
+					$req->closeCursor();
+				}
+				else {
+					// Mise à jour
+					$req->closeCursor();
+					
+					$req = $bdd->prepare("UPDATE etape SET nom_groupe = ?, description = ? WHERE id_recette = ? AND id_etape = ?");
+
+					$req->execute(array($ins_group, $data_form[$key], $id, $ins));
+
+					$req->closeCursor();
+				}
+			}
+		}
+
+		$trouve = true;
+
+		while ($trouve) {
+			$ing++;
+
+			// Suppression des ingrédients
+			$req = $bdd->prepare("SELECT count(*) FROM ingredient WHERE id_recette = ? AND id_ingredient = ?");
+
+			$req->execute(array($id, $ing));
+
+			if ($req->fetchColumn() == 0) {
+				$trouve = false;
+				$req->closeCursor();
+			}
+			else {
+				$req->closeCursor();
+				$req = $bdd->prepare("DELETE FROM ingredient WHERE id_recette = ? AND id_ingredient = ?");
+				$req->execute(array($id, $ing));
+				$req->closeCursor();
+			}
+		}
+
+		$trouve = true;
+
+		while ($trouve) {
+			$ins++;
+
+			// Suppression des instructions
+			$req = $bdd->prepare("SELECT count(*) FROM etape WHERE id_recette = ? AND id_etape = ?");
+
+			$req->execute(array($id, $ins));
+
+			if ($req->fetchColumn() == 0) {
+				$trouve = false;
+				$req->closeCursor();
+			}
+			else {
+				$req->closeCursor();
+				$req = $bdd->prepare("DELETE FROM etape WHERE id_recette = ? AND id_etape = ?");
+				$req->execute(array($id, $ins));
 				$req->closeCursor();
 			}
 		}
