@@ -19,5 +19,6 @@
 - [ ] Gestion des pages (10 recettes par page ?)
 - [ ] Gestion des commentaires
 - [ ] Gestion de la recherche
-- [ ] Gestion du menu (Entrée, plat, dessert)
+- [X] Gestion du menu (Entrée, plat, dessert)
+- [ ] Gestion des liens intéressants
 - [ ] Gestion de la sécurité
