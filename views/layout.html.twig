@@ -21,11 +21,11 @@
 
     <div class="collapse navbar-collapse" id="navbar_reduce">
       <ul class="nav navbar-nav">
-        <li class="active divider-vertical"><a href="{{url}}">Accueil</a></li>
-        <li><a href="{{url}}entree">Entrées</a></li>
-        <li><a href="{{url}}plat">Plats</a></li>
-        <li><a href="{{url}}dessert">Desserts</a></li>
-        <li><a href="#" class="divider-vertical">Liens intéressants</a></li>
+        <li class="{{active_accueil}} divider-vertical"><a href="{{url}}">Accueil</a></li>
+        <li class="{{active_entree}}"><a href="{{url}}entree">Entrées</a></li>
+        <li class="{{active_plat}}"><a href="{{url}}plat">Plats</a></li>
+        <li class="{{active_dessert}}"><a href="{{url}}dessert">Desserts</a></li>
+        <li class="{{active_lien}}"><a href="#" class="divider-vertical">Liens intéressants</a></li>
       </ul>
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">

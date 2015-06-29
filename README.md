@@ -16,7 +16,7 @@
 
 ### Côté utilisateur
 - [X] Affichage des recettes
-- [ ] Gestion des pages (10 recettes par page ?)
+- [X] Gestion des pages (10 recettes par page)
 - [ ] Gestion des commentaires
 - [ ] Gestion de la recherche
 - [X] Gestion du menu (Entrée, plat, dessert)

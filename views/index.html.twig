@@ -27,6 +27,25 @@
      
       <div class="deco-line"></div>
     {% endfor %}
+
+      <nav>
+        <ul class="pager">
+          {% set page_recente = num_page - 1 %}
+          {% set page_ancienne = num_page + 1 %}
+
+          {% if page_recente <= 0 %}
+            <li class="disabled"><a>Recettes récentes</a></li>
+          {% else %}
+            <li><a href="{{url_type_recette}}page/{{page_recente}}">Recettes récentes</a></li>
+          {% endif %}
+
+          {% if page_ancienne > (nb_recette/10) + 1 %}
+            <li class="disabled"><a>Recettes anciennes</a></li>
+          {% else %}
+            <li><a href="{{url_type_recette}}page/{{page_ancienne}}">Recettes anciennes</a></li>
+          {% endif %}
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

@@ -130,7 +130,7 @@ if (isset($_POST['type'])) {
 				$nb_recette = 0;
 			}
 			else {
-				$nb_recette = (($num_page - 1) * 10) - 1;
+				$nb_recette = (($num_page - 1) * 10);
 			}
 
 			if ($type_recette == 0) {
@@ -184,29 +184,61 @@ if (isset($_POST['type'])) {
 			$req->execute(array($id_recette));
 
 			$list['inggroup'] = $req->fetchColumn();
+			$req->closeCursor();
 
 
 			$req = $bdd->prepare("SELECT count(*) FROM ingredient WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['ing'] = $req->fetchColumn();
+			$req->closeCursor();
 
 
 			$req = $bdd->prepare("SELECT count(distinct nom_groupe) FROM etape WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['insgroup'] = $req->fetchColumn();
+			$req->closeCursor();
 
 
 			$req = $bdd->prepare("SELECT count(*) FROM etape WHERE id_recette = ?");
 			$req->execute(array($id_recette));
 
 			$list['ins'] = $req->fetchColumn();
-
 			$req->closeCursor();
 		}
 
 		return $list;
+  	}
+
+
+ /** 
+ * Récupère le nombre de recettes
+ *
+ * @param bdd
+ *		Base de données
+ * @param type_recette
+ *		Type de recette (0 : Tous les types, 1 : Entrée, 2 : Plat, 3 : Dessert)
+ *
+ * @return int
+ *		Entier contenant le nombre de recettes
+**/
+  	function getNbRecipes($bdd, $type_recette) {
+  		if ($type_recette == 0) {
+			$req = $bdd->query("SELECT count(*) FROM recette");
+
+			$nb_recette = $req->fetchColumn();
+			$req->closeCursor();
+  		}
+  		else {
+			$req = $bdd->prepare("SELECT count(*) FROM recette WHERE id_type_recette = ?");
+			$req->execute(array($type_recette));
+
+			$nb_recette = $req->fetchColumn();
+			$req->closeCursor();
+		}
+
+		return $nb_recette;
   	}
 
 

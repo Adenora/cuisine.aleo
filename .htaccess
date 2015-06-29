@@ -1,4 +1,6 @@
 
 RewriteEngine on
+RewriteRule ^([a-z]+)/page/([0-9]+)$ index.php?cat=$1&page=$2 [L] 
+RewriteRule ^page/([0-9]+)$ index.php?page=$1 [L]
 RewriteRule ^([a-z]+)/([0-9]+)$ index.php?cat=$1&id=$2 [L] 
 RewriteRule ^([a-z]+)$ index.php?cat=$1 [L] 
