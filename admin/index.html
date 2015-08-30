@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html ng-app="routeApp">
+<head>
+  <title>Admin - La cuisine d'Aleo</title>
+  <base href="/cuisine_aleo/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+ <div class="container-fluid">
+    <div class="row">
+      <div id="navigation"> <!-- Début navigation -->
+        <div class="sidebar-nav">
+          <div class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="admin">Panel admin</a>
+            </div>
+
+            <div class="navbar-collapse collapse sidebar-navbar-collapse" id="menu">
+              <ul class="nav navbar-nav">
+                <li ui-sref-active="active"><a ui-sref="recette"><i class="glyphicon glyphicon-book"></i> Gestion des recettes</a></li>
+                <li ui-sref-active="active"><a ui-sref="ingredient"><span class="glyphicon glyphicon-grain"></span> Gestion des ingrédients</a></li>
+                <li ui-sref-active="active"><a ui-sref="unite"><span class="glyphicon glyphicon-scale"></span> Gestion des unités</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> <!-- Fin navigation -->
+      
+      <div id="contenu">  <!-- Début contenu -->
+        <div class="container-fluid">
+          <div ui-view></div>
+        </div>
+      </div> <!-- Fin contenu -->
+
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="lib/api-check.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+  <script src="lib/angular-ui-router.min.js"></script>
+  <script src="lib/formly.min.js"></script>
+  <script src="lib/angular-formly-templates-bootstrap.min.js"></script>
+  <script src="lib/jquery.tablesorter.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/jcode_admin.js"></script>
+</body>
+</html>

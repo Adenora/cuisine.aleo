@@ -1,0 +1,25 @@
+
+  <a href="{{url_admin}}addrecipe"><button id="add_recipe" class="btn btn-success">Ajouter une recette</button></a>
+
+  <div class="row">
+    <div class="table-responsive col-lg-8">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th class="col-lg-2">Titre</th>
+            <th class="col-lg-2">Type</th>
+            <th class="col-lg-2">Date d'ajout</th>
+            <th class="col-lg-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="recipe in recipes">
+            <td>{{recipe.nom_recette}}</td>
+            <td>{{recipe.type_recette}}</td>
+            <td>{{recipe.date_ajout}}</td>
+            <td><input type="button" value="Modifier" class="btn btn-success"/> <input type="button" value="Supprimer" class="btn btn-danger" ng-click="onDelete(ingredient.id)"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+  </div>

@@ -1,4 +1,4 @@
 
 RewriteEngine on
-RewriteRule ^([a-z]+)/([0-9]+)$ index.php?cat=$1&id=$2 [L] 
-RewriteRule ^([a-z]+)$ index.php?cat=$1 [L] 
+RewriteRule ^([a-z]+)/([0-9]+)$ index.html?cat=$1&id=$2 [L] 
+RewriteRule ^([a-z]+)$ index.html?cat=$1 [L] 

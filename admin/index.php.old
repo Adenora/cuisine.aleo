@@ -1,9 +1,9 @@
-﻿<?php
+<?php
     $url = "http://localhost/cuisine_aleo/";
     $url_admin = "http://localhost/cuisine_aleo/admin/";
 
 	include_once('../modele/connexion_bdd.php');
-    include_once('../modele/modele.php');
+    //include_once('../modele/modele.php');
 
     include_once('../lib/twig/lib/Twig/Autoloader.php');
     Twig_Autoloader::register();
@@ -18,7 +18,7 @@
         saveRecipe($bdd,$_POST);
         
         echo $twig->render('index_admin.html.twig', array(
-            'listRecipes' => getListRecipes($bdd,0),
+            'listRecipes' => getListRecipes($bdd,0,0),
             'url' => $url,
             'url_admin' => $url_admin,
         ));
@@ -29,7 +29,7 @@
         updateRecipe($bdd,$_GET['id'],$_POST);
         
         echo $twig->render('index_admin.html.twig', array(
-            'listRecipes' => getListRecipes($bdd,0),
+            'listRecipes' => getListRecipes($bdd,0,0),
             'url' => $url,
             'url_admin' => $url_admin,
         ));
@@ -55,7 +55,7 @@
         deleteRecipe($bdd,$_GET['id']);
 
         echo $twig->render('index_admin.html.twig', array(
-            'listRecipes' => getListRecipes($bdd,0),
+            'listRecipes' => getListRecipes($bdd,0,0),
             'url' => $url,
             'url_admin' => $url_admin,
         ));
@@ -79,10 +79,29 @@
         ));
     }
 
+    // Affichage de tous les ingrédients
+    elseif (isset($_GET['cat']) && $_GET['cat'] == 'ingredient') {
+        echo $twig->render('manage_ingredient.html.twig', array(
+            'url' => $url,
+            'url_admin' => $url_admin,
+        ));
+    }
+
+    // Sauvegarde des ingrédients
+    elseif (isset($_POST['save_ingredient'])) {
+        saveIngredient($bdd,$_POST);
+        
+        echo $twig->render('manage_ingredient.html.twig', array(
+            'listRecipes' => getListTypeIngredients($bdd),
+            'url' => $url,
+            'url_admin' => $url_admin,
+        ));
+    }
+
     // Affichage de toutes les recettes
     else {
         echo $twig->render('index_admin.html.twig', array(
-            'listRecipes' => getListRecipes($bdd,0),
+            'listRecipes' => getListRecipes($bdd,0,0),
             'url' => $url,
             'url_admin' => $url_admin,
         ));

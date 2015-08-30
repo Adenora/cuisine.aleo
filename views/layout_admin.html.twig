@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="{{url}}css/style.css" />
 </head>
 
-<body>
+<body data-ng-app="formlyApp" data-ng-controller="IngController as ing">
  <div class="container-fluid">
     <div class="row">
       <div id="navigation"> <!-- Début navigation -->
@@ -20,13 +20,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="{{url}}">Panel admin</a>
+              <a class="navbar-brand" href="{{url_admin}}">Panel admin</a>
             </div>
 
             <div class="navbar-collapse collapse sidebar-navbar-collapse" id="menu">
               <ul class="nav navbar-nav">
                 <li class="active"><a href="{{url_admin}}"><span class="glyphicon glyphicon-home"></span> Gestion des recettes</a></li>
-                <li><a href="{{url}}"><span class="glyphicon glyphicon-off"></span> Gestion des ingrédients</a></li>
+                <li><a href="{{url_admin}}ingredient"><span class="glyphicon glyphicon-off"></span> Gestion des ingrédients</a></li>
                 <li><a href="{{url}}"><span class="glyphicon glyphicon-off"></span> Gestion des quantités</a></li>
               </ul>
             </div>
@@ -43,9 +43,14 @@
     </div>
   </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="{{url}}lib/jquery.tablesorter.min.js"></script>
-    <script src="{{url}}lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{url}}lib/jcode_admin.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="{{url}}lib/api-check.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.js"></script>
+  <script src="{{url}}lib/formly.min.js"></script>
+  <script src="{{url}}lib/angular-formly-templates-bootstrap.min.js"></script>
+  <script src="{{url}}lib/jquery.tablesorter.min.js"></script>
+  <script src="{{url}}lib/bootstrap.min.js"></script>
+  <script src="{{url}}lib/jcode_admin.js"></script>
 </body>
 </html>

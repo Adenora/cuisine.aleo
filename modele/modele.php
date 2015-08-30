@@ -1,17 +1,62 @@
 <?php
 
-if (isset($_POST['type'])) {
+$postdata = file_get_contents("php://input", true);
+$request = json_decode($postdata);
+
+if (isset($request->type)) {
 	include_once('connexion_bdd.php');
 
-	if ($_POST['type'] == "getListQuantityUnit") {
-		$list = array();
-		$list = getListUnit($bdd,3);
-		print json_encode($list);
-	}
-	elseif ($_POST['type'] == "getListIngredients") {
-		$list = array();
+	// Récupération de la liste des types d'ingrédients
+	if ($request->type == "getListTypeIngredients") {
 		$list = getListTypeIngredients($bdd);
-		print json_encode($list);
+		echo json_encode($list);
+	}
+
+	// Ajout des types d'ingrédients
+	elseif ($request->type == "addTypeIngredient") {
+		addTypeIngredient($bdd, $request->nom);
+	}
+
+	// Modification des types d'ingrédients
+	elseif ($request->type == "updateTypeIngredient") {
+		updateTypeIngredient($bdd, $request->id, $request->nom);
+	}
+
+	// Suppression des types d'ingrédients
+	elseif ($request->type == "deleteTypeIngredient") {
+		deleteTypeIngredient($bdd, $request->id);
+	}
+
+	// Affichage des recettes
+	elseif ($request->type == "getListRecipes") {
+		$list = getListRecipes($bdd, $request->num_page, $request->type_recette);
+		echo json_encode($list);
+	}
+
+	// Suppression des recettes
+	elseif ($request->type == "deleteRecipe") {
+		deleteRecipe($bdd, $request->id);
+	}
+
+	// Récupération de la liste des unités
+	elseif ($request->type == "getListUnits") {
+		$list = getListUnits($bdd);
+		echo json_encode($list);
+	}
+
+	// Ajout des unités
+	elseif ($request->type == "addUnit") {
+		addUnit($bdd, $request->nom, $request->type_unite);
+	}
+
+	// Modification des unités
+	elseif ($request->type == "updateUnit") {
+		updateUnit($bdd, $request->id, $request->nom, $request->type_unite);
+	}
+
+	//  Suppression des unités
+	elseif ($request->type == "deleteUnit") {
+		deleteUnit($bdd, $request->id);
 	}
 }
 
@@ -29,7 +74,7 @@ if (isset($_POST['type'])) {
  * @return array
  *		Table des unités 
 **/
-  	function getListUnit($bdd, $type_unite) {
+/*  	function getListUnit($bdd, $type_unite) {
   		$i = 0;
   		$list = array();
 
@@ -46,7 +91,7 @@ if (isset($_POST['type'])) {
 		$req->closeCursor();
 
 		return $list;
-  	}
+  	}*/
 
 
 /** 
@@ -92,7 +137,6 @@ if (isset($_POST['type'])) {
 
 		$req = $bdd->query("SELECT id_type_ingredient, nom_type_ingredient FROM type_ingredient");
 
-
 		while ($data = $req->fetch()) {
 			$list[$i]['id'] = $data['id_type_ingredient'];
 			$list[$i]['nom'] = $data['nom_type_ingredient'];
@@ -103,6 +147,130 @@ if (isset($_POST['type'])) {
 
 		return $list;
   	}
+
+/** 
+ * Ajout d'un type d'ingrédient
+ *
+ * @param bdd
+ *		Base de données
+ * @param ing
+ *		Nom du type d'ingrédient
+**/
+  	function addTypeIngredient($bdd, $ing) {
+		$req = $bdd->prepare("INSERT INTO type_ingredient SET nom_type_ingredient = ?");
+		$req->execute(array($ing));
+		$req->closeCursor();
+  	}
+
+/** 
+ * Modification d'un type d'ingrédient
+ *
+ * @param bdd
+ *		Base de données
+ * @param id
+ *		Identifiant de l'ingrédient à modifier
+ * @param ing
+ *		Nom du type d'ingrédient
+**/
+  	function updateTypeIngredient($bdd, $id, $ing) {
+		$req = $bdd->prepare("UPDATE type_ingredient SET nom_type_ingredient = ? WHERE id_type_ingredient = ?");
+		$req->execute(array($ing, $id));
+		$req->closeCursor();
+  	}
+
+/** 
+ * Suppression d'un type d'ingrédient
+ *
+ * @param bdd
+ *		Base de données
+ * @param id
+ *		Identifiant de l'ingrédient à supprimer
+**/
+  	function deleteTypeIngredient($bdd, $id) {
+		$req = $bdd->prepare("DELETE FROM type_ingredient WHERE id_type_ingredient = ?");
+		$req->execute(array($id));
+		$req->closeCursor();
+  	}  	
+
+
+ /** 
+ * Récupère la liste des unités
+ * Type d'unité :
+ * 	- 1 -> Unité pour les portions 
+ *	- 2 -> Unité de temps
+ *	- 3 -> Unité de poids
+ *
+ * @param bdd
+ *		Base de données
+ *
+ * @return array
+ *		Table des unités
+**/
+  	function getListUnits($bdd) {
+  		$i = 0;
+  		$list = array();
+
+		$req = $bdd->query("SELECT id_unite, type_unite, nom_unite FROM unite");
+
+		while ($data = $req->fetch()) {
+			$list[$i]['id'] = $data['id_unite'];
+			$list[$i]['type_unite'] = $data['type_unite'];
+			$list[$i]['nom'] = $data['nom_unite'];
+			$i++;
+		}
+
+		$req->closeCursor();
+
+		return $list;
+  	}
+
+ /** 
+ * Ajout d'une unité
+ *
+ * @param bdd
+ *		Base de données
+ * @param unit
+ *		Nom de l'unité
+ * @param type
+ *		Type d'unité
+**/
+  	function addUnit($bdd, $unit, $type) {
+		$req = $bdd->prepare("INSERT INTO unite SET type_unite = ?, nom_unite = ?");
+		$req->execute(array($type, $unit));
+		$req->closeCursor();
+  	}
+
+/** 
+ * Modification d'une unité
+ *
+ * @param bdd
+ *		Base de données
+ * @param id
+ *		Identifiant de l'unité à modifier
+ * @param unit
+ *		Nom de l'unité
+ * @param type
+ *		Type d'unité
+**/
+  	function updateUnit($bdd, $id, $unit, $type) {
+		$req = $bdd->prepare("UPDATE unite SET type_unite = ?, nom_unite = ? WHERE id_unite = ?");
+		$req->execute(array($type, $unit, $id));
+		$req->closeCursor();
+  	}
+
+/** 
+ * Suppression d'une unité
+ *
+ * @param bdd
+ *		Base de données
+ * @param id
+ *		Identifiant de l'unité à supprimer
+**/
+  	function deleteUnit($bdd, $id) {
+		$req = $bdd->prepare("DELETE FROM unite WHERE id_unite = ?");
+		$req->execute(array($id));
+		$req->closeCursor();
+  	}  	
 
 
 /** 
@@ -157,7 +325,6 @@ if (isset($_POST['type'])) {
 
 		return $list;
   	}
-
 
 /** 
  * Récupère le nombre d'ingrédients, le nombre de groupes d'ingrédients, le nombre d'instructions et le nombre de groupes d'instructions d'une recette
@@ -618,4 +785,5 @@ if (isset($_POST['type'])) {
 		$req->execute(array($id_recipe));
 		$req->closeCursor();
   	}	
+
 ?>

@@ -1,0 +1,38 @@
+<div ng-controller="UnitController as unit">
+  <div class="row">
+    <div class="form-group col-lg-7">
+      <form class="form-horizontal" ng-submit="onSubmit()" novalidate>
+        <formly-form model="unit.model" fields="unit.fields" form="unit.form" options="unit.options">
+          <button type="submit" class="btn btn-success">Ajouter l'unité</button>
+        </formly-form>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="table-responsive col-lg-7">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th class="col-lg-2">Type</th>
+            <th class="col-lg-3">Unité</th>
+            <th class="col-lg-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="unite in unites">
+            <td>
+              <select ng-model="selectedType">
+                <option ng-repeat="type in types" ng-selected="type.id == unite.type_unite" value="type.id">
+                  {{type.value}}
+                </option>
+              </select>
+            </td>
+            <td><input type="text" ng-model="unite.nom"/></td>
+            <td><input type="button" value="Modifier" class="btn btn-success" ng-click="onUpdate(unite.id, unite.type_unite, unite.nom)"/> <input type="button" value="Supprimer" class="btn btn-danger" ng-click="onDelete(unite.id)"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+  </div>
+</div>

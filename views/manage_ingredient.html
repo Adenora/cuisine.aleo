@@ -1,0 +1,30 @@
+<div ng-controller="IngController as ing">  
+  <div class="row">
+    <div class="form-group col-lg-7">
+      <form class="form-horizontal" ng-submit="onSubmit()" novalidate>
+        <formly-form model="ing.model" fields="ing.fields" form="ing.form" options="ing.options">
+          <button type="submit" class="btn btn-success">Ajouter l'ingrédient</button>
+        </formly-form>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="table-responsive col-lg-5">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th class="col-lg-3">Ingrédient</th>
+            <th class="col-lg-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="ingredient in ingredients">
+            <td><input type="text" ng-model="ingredient.nom"/></td>
+            <td><input type="button" value="Modifier" class="btn btn-success" ng-click="onUpdate(ingredient.id, ingredient.nom)"/> <input type="button" value="Supprimer" class="btn btn-danger" ng-click="onDelete(ingredient.id)"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+  </div>
+</div>

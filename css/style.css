@@ -175,6 +175,7 @@ h3 {
 
   #contenu {
     margin-left: 210px;
+    margin-top: 20px;
   }
 }
 
@@ -191,6 +192,16 @@ h3 {
   text-align: center;
 }
 
-td .del {
+.green {
+  color: green;
+  text-align: center;
+}
+
+td .pointeur, td .pointeur_add {
   cursor: pointer;
 }
+
+#tableRecette th {
+  cursor: pointer;
+}
+

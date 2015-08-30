@@ -2,15 +2,15 @@
 
 ## TODO
 ### Côté administration
-- [X] Ajout de recettes       
-- [X] Modification de recettes
+- [ ] Ajout de recettes       
+- [ ] Modification de recettes
 - [X] Suppression de recettes
-- [ ] Ajout d'ingrédients
-- [ ] Modification d'ingrédients
-- [ ] Suppression d'ingrédients
-- [ ] Ajout de types de quantité
-- [ ] Modification de types de quantité
-- [ ] Suppression de types de quantité
+- [X] Ajout d'ingrédients
+- [X] Modification d'ingrédients
+- [X] Suppression d'ingrédients
+- [X] Ajout d'unités
+- [X] Modification d'unités
+- [X] Suppression d'unités
 - [ ] Connexion/Déconnexion
 - [ ] Gestion de la sécurité
 
@@ -22,3 +22,4 @@
 - [X] Gestion du menu (Entrée, plat, dessert)
 - [ ] Gestion des liens intéressants
 - [ ] Gestion de la sécurité
+- [ ] Téléchargement en PDF d'une recette
